@@ -12,7 +12,6 @@ class Etl:
 
     def run(self):
         data = self.extractor.extract_data()
-        print(data.head())
         if self.transformer:
             data = self.transformer.transform(data)
         if not data.empty:

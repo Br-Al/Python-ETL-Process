@@ -23,39 +23,9 @@ def main():
         elastic_index = os.environ.get("ELASTIC_INDEX")
         elastic_username = os.environ.get("ELASTIC_USERNAME")
         elastic_password = os.environ.get("ELASTIC_PASSWORD")
-        fields = [
-            "log_timestamp",
-            "event.category",
-            "http.request.bytes",
-            "agent.type",
-            "url.query",
-            "timetaken",
-            "http.response.bytes",
-            "source.geo.country_iso_code",
-            "http.response.status_code",
-            "event.kind",
-            "message",
-            "site",
-            "url.path",
-            "url.query_param.productcode"
-        ]
+        fields = [] # TODO: Add fields to extract
         
-        columns = [
-            'log_timestamp',
-            'event_category',
-            'http_request_bytes',
-            'agent_type',
-            'url_query',
-            'timetaken',
-            'http_response_bytes',
-            'source_geo_country_iso_code',
-            'http_response_status_code',
-            'event_kind',
-            'message',
-            'site',
-            'url_path',
-            'url_query_param_productcode',
-        ]
+        columns = [] # TODO: Add columns to load
 
         # Create a connector for the source: ElasticSearch
         elastic_search_connector = ElasticSearchConnector(host=elastic_host, username=elastic_username, password=elastic_password)
@@ -66,7 +36,7 @@ def main():
 
         # Get the last loaded date from the DWH
         query_builder = SelectMaxQueryBuilder(table_name)
-        query = query_builder.build_query("[DT_INSERTED]")
+        query = query_builder.build_query('') # TODO: Add date column name
         max_date = dwh_connector.conn.execute(query).fetchone()[0]
         start_date = datetime.strftime(max_date, "%Y-%m-%d %H:%M:%S") if max_date else "2023-03-22 00:00:00"
         end_date = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
@@ -74,7 +44,7 @@ def main():
         if start_date <= end_date:
             # Create a query builder for the source: ElasticSearch
             elastic_search_query_builder = ElasticSearchBuilder(
-                index='iis-prod', 
+                index=elastic_index,
                 fields=fields, 
                 start_date=start_date, 
                 end_date=end_date

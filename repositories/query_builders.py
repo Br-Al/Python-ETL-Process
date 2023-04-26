@@ -99,34 +99,6 @@ class RequestBodyBuilder(RequestBuilder):
 
         return request
 
-
-
-class OutBrainQueryBuilder(abc.ABC):
-    @abc.abstractmethod
-    def build_query(self):
-        pass
-
-class OutBrainRequestCampaignBuilder(OutBrainQueryBuilder):
-    def __init__(self, marketer_id,  url = 'https://api.outbrain.com/amplify/v0.1') -> None:
-        self.url = url
-        self.marketer_id = marketer_id
-
-    def build_query(self):
-        request = f'{self.url}/marketers/{self.marketer_id}/campaigns?includeArchived=true&fetch=basic'
-        return request
-    
-
-class OutBrainRequestPerformanceReportBuilder(OutBrainQueryBuilder):
-    def __init__(self, marketer_id, start_date, end_date,  url = 'https://api.outbrain.com/amplify/v0.1') -> None:
-        self.url = url
-        self.marketer_id = marketer_id
-        self.start_sate = start_date
-        self.end_end = end_date
-
-    def build_query(self):
-        request = f'{self.url}/reports/marketers/{self.marketer_id}/campaigns/periodic?from={self.start_sate}&to={self.end_end}&breakdown=daily&limit=500'
-        return request
-
 class MetaAdsQueryBuilder(abc.ABC):
     @abc.abstractmethod
     def build_query(self):
@@ -165,7 +137,7 @@ class ElasticSearchBuilder(ElasticQueryBuilder):
         s = Search(index=self.index)  
         
         # Define the query filter using Q function  
-        q = Q('wildcard', site='download*')  
+        q = Q('wildcard', site='')   # TODO: add the site filter
 
         # Add the date range filters to the search object  
         s = s.filter('range', log_timestamp={'gte': self.start_date, 'lte': self.end_date})  

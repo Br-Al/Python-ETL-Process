@@ -75,35 +75,15 @@ class GoogleAnalyticsExtractor(Extractor):
 
 class MetaAdsExtractor(Extractor):
     def extract_data(self):
-        campaign_types = { 
-            "off_site":["VIDEO_VIEW","LEAD_GENERATION","BRAND_AWARENESS","ENGAGEMENT","REACH","MESSAGES","STORE_TRAFFIC","APP_INSTALLS"],    
-            "on_site":["CATALOG_SALES","CONVERSIONS","TRAFFIC","LINK_CLICKS"]
-        }
+        campaign_types = {} # TODO: Add campaign types
         campaign_data = pd.DataFrame(
-            columns=[
-            'date_start', 
-            'date_stop',    
-            'time_increment',    
-            'account_currency',    
-            'account_id',    
-            'campaign_id',    
-            'account_name',    
-            'campaign_name',    
-            'clicks',    
-            'cost_per_inline_link_click',    
-            'cost_per_inline_post_engagement',    
-            'cost_per_unique_click',    
-            'cost_per_unique_inline_link_click',    
-            'impressions',    
-            'inline_link_clicks',    
-            'reach',    
-            'spend',   
-            'objective', 
-            'campaignType'
-        ])
+            columns=[] # TODO: Add columns
+        )
 
         self.connector.connect()
-        campaigns = self.connector.conn.get_campaigns(fields = ['id', 'name', 'account_id'])
+        campaigns = self.connector.conn.get_campaigns(
+            fields = [] # TODO: Add fields
+            )
         fields, params = self.query_builder.build_query()
         for campaign in campaigns:
             for campaign_insight in campaign.get_insights(fields=fields, params=params):
@@ -133,7 +113,7 @@ class MetaAdsExtractor(Extractor):
         return campaign_data
 
 
-class WebtoolsExtractor(Extractor):
+class XXXExtractor(Extractor):
     def __init__(self, connector: Connector, query_builder, from_date=None):
         super().__init__(connector, query_builder)
         self.from_date = from_date
@@ -196,23 +176,9 @@ class ElasticSearchExtractor(Extractor):
         data = []
         for hit in response:
             hit = hit.to_dict()
-            row = {
-                "log_timestamp": hit['log_timestamp'],
-                "event": " ".join(hit['event']['category']),
-                "http_request.bytes": hit['http']['request']['bytes'],
-                "agent_type": hit['agent']['type'],
-                "url_query": hit['url']['query'],
-                "timetaken": hit['timetaken'],
-                "http_response_bytes": hit['http']['response']['bytes'],
-                "source_geo_country_iso_code": hit['source']['geo']['country_iso_code'],
-                "http_response_status_code": hit['http']['response']['status_code'],
-                "event_kind": hit['event']['kind'],
-                "message": hit['message'],
-                "sitce": hit['site'],
-                "url_path": hit['url']['path'],
-                "url_query_param_productcode": hit['url']['query_param']['productcode'] if 'query_param' in hit['url'].keys() else None,
-            }
-            
+            row = {} # TODO: Extract data from hit
             data.append(row)
         data = pd.DataFrame(data)
+
         return data
+    

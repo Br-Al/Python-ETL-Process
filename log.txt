@@ -1,5 +1,0 @@
-2023-01-12 11:54:22.703293 started the script. 
-2023-01-12 11:55:29.345156 started the script. 
-2023-01-12 11:56:24.457500 started the script. 
-2023-01-12 11:57:18.224913 started the script. 
-2023-01-12 11:58:05.868394 started the script. 
