@@ -1,0 +1,13 @@
+*.pyc
+*.temp
+*.DS_Store
+*.log
+
+.idea/
+venv/
+
+# dotenv environment variable files
+/.env
+*/.env
+*credentials.json
+scripts/check_s3_connection.py
